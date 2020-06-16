@@ -3,7 +3,7 @@
 
 		<view class="user-section">
 			<image class="bg" src="/static/user-bg.jpg"></image>
-			<view class="user-info-box">
+			<view class="user-info-box" @click="login">
 				<view class="portrait-box">
 					<image class="portrait" :src="userInfo.avatarUrl || '/static/missing-face.png'"></image>
 				</view>
@@ -11,18 +11,6 @@
 					<text class="username">{{userInfo.nickName || '游客'}}</text>
 				</view>
 			</view>
-			<!-- <view class="vip-card-box">
-				<image class="card-bg" src="/static/vip-card-bg.png" mode=""></image>
-				<view class="b-btn">
-					立即开通
-				</view>
-				<view class="tit">
-					<text class="yticon icon-iLinkapp-"></text>
-					DCloud会员
-				</view>
-				<text class="e-m">DCloud Union</text>
-				<text class="e-b">开通会员开发无bug 一测就上线</text>
-			</view> -->
 		</view>
 
 		<view class="cover-container" :style="[{
@@ -31,21 +19,6 @@
 			}]"
 		 @touchstart="coverTouchstart" @touchmove="coverTouchmove" @touchend="coverTouchend">
 			<image class="arc" src="/static/arc.png"></image>
-
-			<!-- <view class="tj-sction">
-				<view class="tj-item">
-					<text class="num">128.8</text>
-					<text>余额</text>
-				</view>
-				<view class="tj-item">
-					<text class="num">0</text>
-					<text>优惠券</text>
-				</view>
-				<view class="tj-item">
-					<text class="num">20</text>
-					<text>积分</text>
-				</view>
-			</view> -->
 			<!-- 订单 -->
 			<view class="order-section">
 				<view class="order-item" @click="navTo('/pages/order/order?state=0')" hover-class="common-hover" :hover-stay-time="50">
@@ -56,35 +29,9 @@
 					<text class="yticon icon-daifukuan"></text>
 					<text>待付款</text>
 				</view>
-				
-				<!-- 	<view class="order-item" @click="navTo('/pages/order/order?state=2')" hover-class="common-hover"  :hover-stay-time="50">
-					<text class="yticon icon-yishouhuo"></text>
-					<text>待收货</text>
-				</view>
-				<view class="order-item" @click="navTo('/pages/order/order?state=4')" hover-class="common-hover"  :hover-stay-time="50">
-					<text class="yticon icon-shouhoutuikuan"></text>
-					<text>退款/售后</text>
-				</view> -->
 			</view>
 			<!-- 浏览历史 -->
 			<view class="history-section icon">
-				<!-- <view class="sec-header">
-					<text class="yticon icon-lishijilu"></text>
-					<text>浏览历史</text>
-				</view> -->
-				<!-- <scroll-view scroll-x class="h-list">
-					<image @click="navTo('/pages/product/product')" src="https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1553105186633&di=c121a29beece4e14269948d990f9e720&imgtype=0&src=http%3A%2F%2Fimg004.hc360.cn%2Fm8%2FM04%2FDE%2FDE%2FwKhQplZ-QteEBvsbAAAAADUkobU751.jpg" mode="aspectFill"></image>
-					<image @click="navTo('/pages/product/product')" src="https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1553105231218&di=09534b9833b5243296630e6d5b728eff&imgtype=0&src=http%3A%2F%2Fimg002.hc360.cn%2Fm1%2FM05%2FD1%2FAC%2FwKhQcFQ3iN2EQTo8AAAAAHQU6_8355.jpg" mode="aspectFill"></image>
-					<image @click="navTo('/pages/product/product')" src="https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1553105320890&di=c743386be51f2c4c0fd4b75754d14f3c&imgtype=0&src=http%3A%2F%2Fimg007.hc360.cn%2Fhb%2FMTQ1OTg4ODY0MDA3Ny05OTQ4ODY1NDQ%3D.jpg" mode="aspectFill"></image>
-					<image @click="navTo('/pages/product/product')" src="https://ss2.bdstatic.com/70cFvnSh_Q1YnxGkpoWK1HF6hhy/it/u=2691146630,2165926318&fm=26&gp=0.jpg" mode="aspectFill"></image>
-					<image @click="navTo('/pages/product/product')" src="https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1553105443324&di=8141bf13f3f208c61524d67f9bb83942&imgtype=0&src=http%3A%2F%2Fimg.zcool.cn%2Fcommunity%2F01ac9a5548d29b0000019ae98e6d98.jpg" mode="aspectFill"></image>
-					<image @click="navTo('/pages/product/product')" src="https://ss0.bdstatic.com/70cFuHSh_Q1YnxGkpoWK1HF6hhy/it/u=191678693,2701202375&fm=26&gp=0.jpg" mode="aspectFill"></image>
-				</scroll-view> -->
-				<!-- <list-cell icon="icon-iconfontweixin" iconColor="#e07472" title="我的钱包" tips="您的会员还有3天过期"></list-cell> -->
-				<!-- <list-cell icon="icon-dizhi" iconColor="#5fcda2" title="地址管理" @eventClick="navTo('/pages/address/address')"></list-cell> -->
-				<!-- <list-cell icon="icon-share" iconColor="#9789f7" title="分享" tips="邀请好友赢10万大礼"></list-cell> -->
-				<!-- <list-cell icon="icon-pinglun-copy" iconColor="#ee883b" title="晒单" tips="晒单抢红包"></list-cell> -->
-				<!-- <list-cell icon="icon-shoucang_xuanzhongzhuangtai" iconColor="#54b4ef" title="我的收藏"></list-cell> -->
 				<list-cell icon="icon-shezhi1" iconColor="#e07472" title="设置" border="" @eventClick="navTo('/pages/set/set')"></list-cell>
 			</view>
 		</view>
@@ -95,8 +42,9 @@
 <script>
 	import listCell from '@/components/mix-list-cell';
 	import {
-		mapState
-	} from 'vuex';
+		mapState,
+		mapMutations
+	} from 'vuex'
 
 	let startY = 0,
 		moveY = 0,
@@ -137,9 +85,10 @@
 		},
 		// #endif
 		computed: {
-			...mapState(['hasLogin', 'userInfo'])
+			...mapState(['ipAddress', 'userId', 'hasLogin', 'userInfo'])
 		},
 		methods: {
+			...mapMutations(['updateUserInfo', 'updateUserId']),
 			/**
 			 * 统一跳转接口,拦截未登录路由
 			 * navigator标签现在默认没有转场动画，所以用view
@@ -190,7 +139,56 @@
 				this.moving = false;
 				this.coverTransition = 'transform 0.3s cubic-bezier(.21,1.93,.53,.64)';
 				this.coverTransform = 'translateY(0px)';
-			}
+			},
+			login() {
+				const _this = this;
+
+				if (_this.userId === '') {
+					uni.showLoading({
+						title: '登录中...'
+					});
+				}
+
+				// wx获取登录用户code
+				uni.login({
+					provider: 'weixin',
+					success: function(loginRes) {
+						//将用户登录code传递到后台置换用户SessionKey、OpenId等信息
+						uni.request({
+							url: _this.ipAddress + '/user/login',
+							data: {
+								code: loginRes.code,
+							},
+							method: 'GET',
+							success: (res) => {
+								//openId、或SessionKdy存储//隐藏loading
+								_this.updateUserId(res.data.userId)
+								//获取用户信息
+								uni.getUserInfo({
+									provider: 'weixin',
+									lang: 'zh_CN',
+									success: function(infoRes) {
+										console.log('infoRes', infoRes)
+										//获取用户信息后向调用信息更新方法
+										console.log('userId', _this.userId)
+										infoRes.userInfo.userId = _this.userId
+										_this.updateUserInfo(infoRes.userInfo); //调用更新信息方法
+									},
+									fail() {
+										//用户未授权转向授权页面
+										uni.reLaunch({ //信息更新成功后跳转到小程序首页
+											url: '/pages/public/login'
+										});
+									},
+									complete() {
+										uni.hideLoading();
+									}
+								});
+							}
+						});
+					},
+				});
+			},
 		}
 	}
 </script>

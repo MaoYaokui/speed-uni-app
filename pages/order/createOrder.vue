@@ -78,7 +78,8 @@
 
 <script>
 	import {
-		mapState
+		mapState,
+		mapMutations
 	} from 'vuex'
 	import uniNumberBox from "@/components/uni-number-box/uni-number-box.vue"
 
@@ -120,6 +121,7 @@
 			});
 		},
 		methods: {
+			...mapMutations(['updateUserInfo', 'updateUserId']),
 			submit() {
 				const _this = this;
 				const order = _this.order
@@ -131,31 +133,39 @@
 					});
 					return
 				}
+				// 判断此用户是否登录
+				if (_this.userId === '') {
+					uni.showToast({
+						title: '首次购买，请先在我的页面进行登录!',
+						icon: 'none',
+						duration: 2000
+					});
+				} else {
+					uni.showLoading({
+						title: '正在生成订单'
+					})
 
-				uni.showLoading({
-					title: '正在生成订单'
-				})
-
-				uni.request({
-					url: _this.ipAddress + '/orders/create',
-					data: {
-						productId: order.productId,
-						itemId: order.itemId,
-						userId: _this.userId,
-						count: order.count,
-						payPrice: order.totalPrice,
-						remark: order.remark
-					},
-					method: 'POST',
-					success: (res) => {
-						const orderId = res.data.orderId;
-						console.log('orderId', orderId)
-						uni.hideLoading();
-						uni.redirectTo({
-							url: `/pages/money/pay?orderId=${orderId}`
-						})
-					}
-				});
+					uni.request({
+						url: _this.ipAddress + '/orders/create',
+						data: {
+							productId: order.productId,
+							itemId: order.itemId,
+							userId: _this.userId,
+							count: order.count,
+							payPrice: order.totalPrice,
+							remark: order.remark
+						},
+						method: 'POST',
+						success: (res) => {
+							const orderId = res.data.orderId;
+							console.log('orderId', orderId)
+							uni.hideLoading();
+							uni.redirectTo({
+								url: `/pages/money/pay?orderId=${orderId}`
+							})
+						}
+					});
+				}
 			},
 			change(value) {
 				this.order.count = value
@@ -172,7 +182,54 @@
 			},
 			confirm() {
 				this.clause = false
-			}
+			},
+			login() {
+				const _this = this;
+
+				uni.showLoading({
+					title: '登录中...'
+				});
+
+				// wx获取登录用户code
+				uni.login({
+					provider: 'weixin',
+					success: function(loginRes) {
+						//将用户登录code传递到后台置换用户SessionKey、OpenId等信息
+						uni.request({
+							url: _this.ipAddress + '/user/login',
+							data: {
+								code: loginRes.code,
+							},
+							method: 'GET',
+							success: (res) => {
+								//openId、或SessionKdy存储//隐藏loading
+								_this.updateUserId(res.data.userId)
+								//获取用户信息
+								uni.getUserInfo({
+									provider: 'weixin',
+									lang: 'zh_CN',
+									success: function(infoRes) {
+										console.log('infoRes', infoRes)
+										//获取用户信息后向调用信息更新方法
+										console.log('userId', _this.userId)
+										infoRes.userInfo.userId = _this.userId
+										_this.updateUserInfo(infoRes.userInfo); //调用更新信息方法
+									},
+									fail() {
+										//用户未授权转向授权页面
+										uni.reLaunch({ //信息更新成功后跳转到小程序首页
+											url: '/pages/public/login'
+										});
+									},
+									complete() {
+										uni.hideLoading();
+									}
+								});
+							}
+						});
+					},
+				});
+			},
 		}
 	}
 </script>

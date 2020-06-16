@@ -26,17 +26,6 @@
 				<input class="input" @input="change" :value="form.phone" data-name="phone" placeholder-class="plaClass" placeholder='请输入手机号'></input>
 			</view>
 		</view>
-		<!-- <view class='line'>
-			<view class='lineLeft'>地址</view>
-			<view class="lineRight">
-				<picker @change="change" mode="region" data-name="region" :value="form.region" :custom-item="customItem">
-					<view class="picker">
-						{{form.region[0]}}，{{form.region[1]}}，{{form.region[2]}}
-					</view>
-				</picker>
-				<view class="tips tri"></view>
-			</view>
-		</view> -->
 		<view class='line'>
 			<view class='lineLeft'>备注</view>
 			<view class="lineRight">
@@ -53,7 +42,8 @@
 
 <script>
 	import {
-		mapState
+		mapState,
+		mapMutations
 	} from 'vuex'
 
 	const valid = require('../../components/util/valid.js'); //校验规则文件
@@ -74,6 +64,7 @@
 			};
 		},
 		methods: {
+			...mapMutations(['updateUserInfo', 'updateUserId']),
 			// 输入框或者picker事件方法
 			change(e) {
 				let name = e.currentTarget.dataset.name;
@@ -139,9 +130,58 @@
 					});
 				}
 			}, 1000), //防重点击,1s内只可点击一次
+			login() {
+				const _this = this;
+
+				if (_this.userId === '') {
+					uni.showLoading({
+						title: '登录中...'
+					});
+				}
+
+				// wx获取登录用户code
+				uni.login({
+					provider: 'weixin',
+					success: function(loginRes) {
+						//将用户登录code传递到后台置换用户SessionKey、OpenId等信息
+						uni.request({
+							url: _this.ipAddress + '/user/login',
+							data: {
+								code: loginRes.code,
+							},
+							method: 'GET',
+							success: (res) => {
+								//openId、或SessionKdy存储//隐藏loading
+								_this.updateUserId(res.data.userId)
+								//获取用户信息
+								uni.getUserInfo({
+									provider: 'weixin',
+									lang: 'zh_CN',
+									success: function(infoRes) {
+										console.log('infoRes', infoRes)
+										//获取用户信息后向调用信息更新方法
+										console.log('userId', _this.userId)
+										infoRes.userInfo.userId = _this.userId
+										_this.updateUserInfo(infoRes.userInfo); //调用更新信息方法
+									},
+									fail() {
+										//用户未授权转向授权页面
+										uni.reLaunch({ //信息更新成功后跳转到小程序首页
+											url: '/pages/public/login'
+										});
+									},
+									complete() {
+										uni.hideLoading();
+									}
+								});
+							}
+						});
+					},
+				});
+			},
 		},
 		onLoad() {
-
+			this.login();
 		}
 	}
 </script>

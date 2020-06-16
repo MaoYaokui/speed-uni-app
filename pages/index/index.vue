@@ -130,14 +130,6 @@
 						}) || [];
 					}
 				});
-
-				// let carouselList = await this.$api.json('carouselList');
-				// this.titleNViewBackground = carouselList[0].background;
-				// this.swiperLength = carouselList.length;
-				// this.carouselList = carouselList;
-
-				// let goodsList = await this.$api.json('goodsList');
-				// this.goodsList = goodsList || [];
 			},
 			//轮播图切换修改背景色
 			swiperChange(e) {
@@ -152,38 +144,6 @@
 					url: `/pages/product/product?id=${id}`
 				})
 			},
-			// login() {
-
-
-			// 	// uni.login({
-			// 	// 	provider: 'weixin',
-			// 	// 	success: (loginRes) => {
-			// 	// 		this.aaa()
-			// 	// 		// 获取用户信息
-			// 	// 		uni.getUserInfo({
-			// 	// 			provider: 'weixin',
-			// 	// 			success: function(infoRes) {
-			// 	// 				this.aaa()
-			// 	// 				console.log('-------获取微信用户所有-----');
-			// 	// 				infoRes.userInfo.code = loginRes.code
-			// 	// 				const userInfo = infoRes.userInfo
-			// 	// 				console.log('user', userInfo);
-
-			// 	// 				// uni.request({
-			// 	// 				//     url: this.ipAddress +  '/user', //仅为示例，并非真实接口地址。
-			// 	// 				//     data: {
-			// 	// 				//         text: 'uni.request'
-			// 	// 				//     },
-			// 	// 				//     success: (res) => {
-			// 	// 				//         console.log(res.data);
-			// 	// 				//         this.text = 'request success';
-			// 	// 				//     }
-			// 	// 				// });
-			// 	// 			}
-			// 	// 		});
-			// 	// 	}
-			// 	// });
-			// },
 			toMain(code, userInfo) {
 				userInfo.code = code
 				this.login(userInfo);
@@ -191,9 +151,9 @@
 			login() {
 				const _this = this;
 
-				uni.showLoading({
-					title: '登录中...'
-				});
+				// uni.showLoading({
+				// 	title: '登录中...'
+				// });
 
 				// wx获取登录用户code
 				uni.login({
@@ -221,10 +181,10 @@
 										_this.updateUserInfo(infoRes.userInfo); //调用更新信息方法
 									},
 									fail() {
-										//用户未授权转向授权页面
-										uni.reLaunch({ //信息更新成功后跳转到小程序首页
-											url: '/pages/public/login'
-										});
+										// //用户未授权转向授权页面
+										// uni.reLaunch({ //信息更新成功后跳转到小程序首页
+										// 	url: '/pages/public/login'
+										// });
 									},
 									complete() {
 										uni.hideLoading();
