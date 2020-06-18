@@ -22,7 +22,7 @@
 			</view>
 		</view>
 		<view class="c-list">
-			<view class="c-row b-b" @click="toggleSpec">
+			<view class="c-row b-b" @click="toggleSpec" style="border:2px solid #fc0a07;">
 				<text class="tit">购买类型</text>
 				<view class="con">
 					{{specSelected.name}}
